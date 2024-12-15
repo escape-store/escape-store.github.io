@@ -115,6 +115,11 @@ class SnowEffect {
     }
 }
 
+function handleNavigation(pageName) {
+    history.pushState({}, '', `/${pageName}`);
+    showPage(pageName);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize snow effects
     new SnowEffect('snow');
@@ -138,13 +143,13 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', (e) => {
             if(link.dataset.page) {
                 e.preventDefault();
-                showPage(link.dataset.page);
+                handleNavigation(link.dataset.page);
             }
         });
     });
 
     document.querySelector('.buy-button')?.addEventListener('click', () => {
-        showPage('buy');
+        handleNavigation('buy');
     });
 
     const quantities = [15, 25, 50, 75, 100, 150, 250, 300, 500, 750, 1000, 2500];
@@ -228,4 +233,18 @@ document.addEventListener('DOMContentLoaded', () => {
             page.classList.remove('active'));
         document.getElementById(`${pageId}-page`).classList.add('active');
     }
+});
+
+// Handle browser back/forward buttons
+window.addEventListener('popstate', () => {
+    const path = window.location.pathname;
+    const page = path.substring(1) || 'escape';
+    showPage(page);
+});
+
+// Check for initial page load with URL parameters
+window.addEventListener('load', () => {
+    const path = window.location.pathname;
+    const page = path.substring(1) || 'escape';
+    showPage(page);
 });
