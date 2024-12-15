@@ -66,6 +66,8 @@ const CONFIG = {
 class SnowEffect {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
+        if (!this.canvas) return;
+        
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
         this.particleCount = 100;
@@ -95,6 +97,8 @@ class SnowEffect {
     }
 
     animate() {
+        if (!this.ctx) return;
+        
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
         this.particles.forEach(particle => {
@@ -116,16 +120,36 @@ class SnowEffect {
 }
 
 function handleNavigation(pageName) {
-    history.pushState({}, '', `/${pageName}`);
+    window.location.hash = pageName;
     showPage(pageName);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize snow effects
-    new SnowEffect('snow');
-    new SnowEffect('snow-buy');
-    new SnowEffect('snow-terms');
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => 
+        page.classList.remove('active'));
+    const targetPage = document.getElementById(`${pageId}-page`);
+    if (targetPage) {
+        targetPage.classList.add('active');
+    }
+}
 
+function updatePayButton() {
+    const buyButton = document.querySelector('#buy-page .buy-button');
+    if (buyButton) {
+        buyButton.style.opacity = selectedQuantity && selectedPayment ? '1' : '0.5';
+    }
+}
+
+let selectedQuantity = null;
+let selectedPayment = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize snow effects for each page
+    ['snow', 'snow-buy', 'snow-terms'].forEach(id => {
+        new SnowEffect(id);
+    });
+
+    // Mobile menu handling
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     
@@ -134,45 +158,51 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.classList.toggle('active');
     });
 
+    // Theme toggle
     const themeToggle = document.querySelector('.theme-toggle');
-    themeToggle.addEventListener('click', () => {
+    themeToggle?.addEventListener('click', () => {
         document.body.classList.toggle('light-theme');
     });
 
+    // Navigation links
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
             if(link.dataset.page) {
                 e.preventDefault();
                 handleNavigation(link.dataset.page);
+                if (menuToggle?.classList.contains('active')) {
+                    menuToggle.click();
+                }
             }
         });
     });
 
+    // Main buy button
     document.querySelector('.buy-button')?.addEventListener('click', () => {
         handleNavigation('buy');
     });
 
+    // Quantity options
     const quantities = [15, 25, 50, 75, 100, 150, 250, 300, 500, 750, 1000, 2500];
     const quantityGrid = document.querySelector('.quantity-grid');
-    let selectedQuantity = null;
-    let selectedPayment = null;
-
-    quantities.forEach(qty => {
-        const button = document.createElement('button');
-        button.className = 'quantity-option';
-        button.textContent = qty;
-        button.addEventListener('click', () => selectQuantity(button));
-        quantityGrid.appendChild(button);
-    });
-
-    function selectQuantity(button) {
-        document.querySelectorAll('.quantity-option').forEach(btn => 
-            btn.classList.remove('selected'));
-        button.classList.add('selected');
-        selectedQuantity = button.textContent;
-        updatePayButton();
+    
+    if (quantityGrid) {
+        quantities.forEach(qty => {
+            const button = document.createElement('button');
+            button.className = 'quantity-option';
+            button.textContent = qty;
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.quantity-option').forEach(btn => 
+                    btn.classList.remove('selected'));
+                button.classList.add('selected');
+                selectedQuantity = qty;
+                updatePayButton();
+            });
+            quantityGrid.appendChild(button);
+        });
     }
 
+    // Payment options
     document.querySelectorAll('.payment-option').forEach(button => {
         button.addEventListener('click', () => {
             document.querySelectorAll('.payment-option').forEach(btn => 
@@ -183,33 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function showOrderModal() {
-        const modal = document.getElementById('order-modal');
-        const details = modal.querySelector('.order-details');
-        const proceedButton = modal.querySelector('.proceed-button');
-        const notice = modal.querySelector('.availability-notice');
-        
-        details.innerHTML = `
-            <span class="detail-label">Amount:</span> <span class="detail-value">${selectedQuantity} stars</span><br>
-            <span class="detail-label">Method:</span> <span class="detail-value">${selectedPayment}</span><br>
-            <span class="detail-label">Price:</span> <span class="detail-value">${CONFIG.PRICES[selectedPayment][selectedQuantity]}</span>
-        `;
-        
-        const paymentLink = CONFIG.PAYMENT_LINKS[selectedPayment][selectedQuantity];
-        
-        if (paymentLink) {
-            proceedButton.onclick = () => window.location.href = paymentLink;
-            notice.textContent = '';
-        } else {
-            notice.textContent = 'Not available now';
-        }
-        
-        modal.style.display = 'block';
-        setTimeout(() => {
-            modal.classList.add('active');
-        }, 10);
-    }
-
+    // Order modal
     document.querySelectorAll('.buy-button').forEach(button => {
         button.addEventListener('click', () => {
             if (selectedQuantity && selectedPayment) {
@@ -218,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Close modal on outside click
     window.onclick = (e) => {
         const modal = document.getElementById('order-modal');
         if (e.target === modal) {
@@ -228,23 +233,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    function showPage(pageId) {
-        document.querySelectorAll('.page').forEach(page => 
-            page.classList.remove('active'));
-        document.getElementById(`${pageId}-page`).classList.add('active');
+    // Handle initial load and hash changes
+    window.addEventListener('hashchange', () => {
+        const page = window.location.hash.slice(1) || 'escape';
+        showPage(page);
+    });
+
+    // Initial page load
+    const initialPage = window.location.hash.slice(1) || 'escape';
+    showPage(initialPage);
+});
+
+function showOrderModal() {
+    const modal = document.getElementById('order-modal');
+    const details = modal.querySelector('.order-details');
+    const proceedButton = modal.querySelector('.proceed-button');
+    const notice = modal.querySelector('.availability-notice');
+    
+    details.innerHTML = `
+        <span class="detail-label">Amount:</span> <span class="detail-value">${selectedQuantity} stars</span><br>
+        <span class="detail-label">Method:</span> <span class="detail-value">${selectedPayment}</span><br>
+        <span class="detail-label">Price:</span> <span class="detail-value">${CONFIG.PRICES[selectedPayment][selectedQuantity]}</span>
+    `;
+    
+    const paymentLink = CONFIG.PAYMENT_LINKS[selectedPayment][selectedQuantity];
+    
+    if (paymentLink) {
+        proceedButton.onclick = () => window.location.href = paymentLink;
+        notice.textContent = '';
+    } else {
+        notice.textContent = 'Not available now';
     }
-});
-
-// Handle browser back/forward buttons
-window.addEventListener('popstate', () => {
-    const path = window.location.pathname;
-    const page = path.substring(1) || 'escape';
-    showPage(page);
-});
-
-// Check for initial page load with URL parameters
-window.addEventListener('load', () => {
-    const path = window.location.pathname;
-    const page = path.substring(1) || 'escape';
-    showPage(page);
-});
+    
+    modal.style.display = 'block';
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+}
