@@ -118,40 +118,30 @@ class SnowEffect {
 document.addEventListener('DOMContentLoaded', () => {
     const currentHash = window.location.hash.slice(1) || 'escape';
     showPage(currentHash);
+
+    // Initialize snow effects
     const snowCanvases = ['snow', 'snow-buy', 'snow-terms'];
     snowCanvases.forEach(canvasId => {
         const canvas = document.getElementById(canvasId);
         if (canvas) new SnowEffect(canvasId);
     });
 
-    // Navigation functionality
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+    // Theme toggle
     const themeToggle = document.querySelector('.theme-toggle');
-
-    menuToggle?.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-
-    themeToggle?.addEventListener('click', () => {
-        document.body.classList.toggle('light-theme');
-        themeToggle.textContent = document.body.classList.contains('light-theme') ? '🌙' : '☀️';
-    });
-
-    // Page navigation
-    document.querySelectorAll('[data-page]').forEach(element => {
-        element.addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage(element.dataset.page);
-            if (menuToggle?.classList.contains('active')) {
-                menuToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-            }
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            themeToggle.textContent = document.body.classList.contains('light-theme') ? '🌙' : '☀️';
         });
+    }
+
+    // Navigation
+    window.addEventListener('hashchange', () => {
+        const pageId = window.location.hash.slice(1) || 'escape';
+        showPage(pageId);
     });
 
-    // Buy page functionality
+    // Buy functionality
     const quantities = [15, 25, 50, 75, 100, 150, 250, 300, 500, 750, 1000, 2500];
     const quantityGrid = document.querySelector('.quantity-grid');
     let selectedQuantity = null;
@@ -218,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => modal.classList.add('active'), 10);
     }
 
-    // Modal close functionality
+    // Modal close
     window.addEventListener('click', (e) => {
         const modal = document.querySelector('.modal');
         if (e.target === modal) {
@@ -226,10 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => modal.style.display = 'none', 300);
         }
     });
+
     function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(page => 
-        page.classList.remove('active'));
-    document.getElementById(`${pageId}-page`).classList.add('active');
-    window.location.hash = pageId;
+        document.querySelectorAll('.page').forEach(page => 
+            page.classList.remove('active'));
+        const targetPage = document.getElementById(`${pageId}-page`);
+        if (targetPage) {
+            targetPage.classList.add('active');
+        }
     }
 });
