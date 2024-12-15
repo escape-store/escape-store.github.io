@@ -65,8 +65,12 @@ const CONFIG = {
 
 class SnowEffect {
     constructor(canvasId) {
+        console.log('Initializing snow effect for:', canvasId);
         this.canvas = document.getElementById(canvasId);
-        if (!this.canvas) return;
+        if (!this.canvas) {
+            console.log('Canvas not found:', canvasId);
+            return;
+        }
         
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
@@ -74,6 +78,7 @@ class SnowEffect {
         
         this.init();
         this.animate();
+        console.log('Snow effect initialized for:', canvasId);
     }
 
     init() {
@@ -92,12 +97,15 @@ class SnowEffect {
     }
 
     resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        if (this.canvas) {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+            console.log('Canvas resized:', this.canvas.width, 'x', this.canvas.height);
+        }
     }
 
     animate() {
-        if (!this.ctx) return;
+        if (!this.ctx || !this.canvas) return;
         
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
@@ -119,17 +127,31 @@ class SnowEffect {
     }
 }
 
+let selectedQuantity = null;
+let selectedPayment = null;
+
 function handleNavigation(pageName) {
-    window.location.hash = pageName;
+    console.log('Navigation triggered for:', pageName);
+    window.location.hash = '#' + pageName;
     showPage(pageName);
 }
 
 function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(page => 
-        page.classList.remove('active'));
+    console.log('Showing page:', pageId);
+    const pages = document.querySelectorAll('.page');
+    console.log('Total pages found:', pages.length);
+    
+    pages.forEach(page => {
+        console.log('Processing page:', page.id);
+        page.classList.remove('active');
+    });
+    
     const targetPage = document.getElementById(`${pageId}-page`);
+    console.log('Target page found:', !!targetPage);
+    
     if (targetPage) {
         targetPage.classList.add('active');
+        console.log('Page activated:', pageId);
     }
 }
 
@@ -137,23 +159,24 @@ function updatePayButton() {
     const buyButton = document.querySelector('#buy-page .buy-button');
     if (buyButton) {
         buyButton.style.opacity = selectedQuantity && selectedPayment ? '1' : '0.5';
+        console.log('Pay button updated:', selectedQuantity, selectedPayment);
     }
 }
 
-let selectedQuantity = null;
-let selectedPayment = null;
-
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize snow effects for each page
+    console.log('DOM Content Loaded');
+    
+    // Initialize snow effects
     ['snow', 'snow-buy', 'snow-terms'].forEach(id => {
         new SnowEffect(id);
     });
 
-    // Mobile menu handling
+    // Mobile menu
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     
     menuToggle?.addEventListener('click', () => {
+        console.log('Menu toggle clicked');
         menuToggle.classList.toggle('active');
         navLinks.classList.toggle('active');
     });
@@ -161,24 +184,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Theme toggle
     const themeToggle = document.querySelector('.theme-toggle');
     themeToggle?.addEventListener('click', () => {
+        console.log('Theme toggled');
         document.body.classList.toggle('light-theme');
     });
 
-    // Navigation links
+    // Navigation
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
+            console.log('Nav link clicked:', link.dataset.page);
             if(link.dataset.page) {
                 e.preventDefault();
                 handleNavigation(link.dataset.page);
-                if (menuToggle?.classList.contains('active')) {
-                    menuToggle.click();
-                }
             }
         });
     });
 
-    // Main buy button
+    // Buy button
     document.querySelector('.buy-button')?.addEventListener('click', () => {
+        console.log('Main buy button clicked');
         handleNavigation('buy');
     });
 
@@ -192,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
             button.className = 'quantity-option';
             button.textContent = qty;
             button.addEventListener('click', () => {
+                console.log('Quantity selected:', qty);
                 document.querySelectorAll('.quantity-option').forEach(btn => 
                     btn.classList.remove('selected'));
                 button.classList.add('selected');
@@ -205,6 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Payment options
     document.querySelectorAll('.payment-option').forEach(button => {
         button.addEventListener('click', () => {
+            console.log('Payment option selected:', button.textContent);
             document.querySelectorAll('.payment-option').forEach(btn => 
                 btn.classList.remove('selected'));
             button.classList.add('selected');
@@ -213,19 +238,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Order modal
+    // Buy buttons
     document.querySelectorAll('.buy-button').forEach(button => {
         button.addEventListener('click', () => {
+            console.log('Buy button clicked, state:', { selectedQuantity, selectedPayment });
             if (selectedQuantity && selectedPayment) {
                 showOrderModal();
             }
         });
     });
 
-    // Close modal on outside click
+    // Modal handling
     window.onclick = (e) => {
         const modal = document.getElementById('order-modal');
         if (e.target === modal) {
+            console.log('Modal closed by outside click');
             modal.classList.remove('active');
             setTimeout(() => {
                 modal.style.display = 'none';
@@ -233,18 +260,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Handle initial load and hash changes
+    // Hash change handling
     window.addEventListener('hashchange', () => {
         const page = window.location.hash.slice(1) || 'escape';
+        console.log('Hash changed to:', page);
         showPage(page);
     });
 
     // Initial page load
     const initialPage = window.location.hash.slice(1) || 'escape';
+    console.log('Initial page load:', initialPage);
     showPage(initialPage);
 });
 
 function showOrderModal() {
+    console.log('Showing order modal');
     const modal = document.getElementById('order-modal');
     const details = modal.querySelector('.order-details');
     const proceedButton = modal.querySelector('.proceed-button');
@@ -257,6 +287,7 @@ function showOrderModal() {
     `;
     
     const paymentLink = CONFIG.PAYMENT_LINKS[selectedPayment][selectedQuantity];
+    console.log('Payment link:', paymentLink);
     
     if (paymentLink) {
         proceedButton.onclick = () => window.location.href = paymentLink;
