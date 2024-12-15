@@ -116,6 +116,8 @@ class SnowEffect {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const currentHash = window.location.hash.slice(1) || 'escape';
+    showPage(currentHash);
     const snowCanvases = ['snow', 'snow-buy', 'snow-terms'];
     snowCanvases.forEach(canvasId => {
         const canvas = document.getElementById(canvasId);
@@ -224,10 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => modal.style.display = 'none', 300);
         }
     });
-
     function showPage(pageId) {
-        document.querySelectorAll('.page').forEach(page => 
-            page.classList.remove('active'));
-        document.getElementById(`${pageId}-page`).classList.add('active');
+    document.querySelectorAll('.page').forEach(page => 
+        page.classList.remove('active'));
+    document.getElementById(`${pageId}-page`).classList.add('active');
+    window.location.hash = pageId;
     }
 });
