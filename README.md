@@ -1,15 +1,17 @@
-# 🌟 Escape Store Website 🌟
+![Escape Store](assets/logo.png)
 
-A modern and stylish website for selling stars in Escape from Tarkov. Created by **Escape Store Ltd.** ⭐️
+# 🖤 Escape Store Website
+
+A modern and stylish website to buy telegram stars stars. Created by **Escape Store Ltd.** ⭐️
 
 ## ✨ Features
 
-🎯 Responsive design for all devices
-🌓 Dark/Light theme toggle
-❄️ Snow effect animation
-💳 Multiple payment methods support
-💰 Dynamic price calculation
-🔲 Modal windows for orders
+🎯 Responsive design for all devices\
+🌓 Dark/Light theme toggle\
+❄️ Snow effect animation\
+💳 Multiple payment methods support\
+💰 Dynamic price calculation\
+🔲 Modal windows for orders\
 🔄 Smooth page transitions
 
 ## 📁 Structure
@@ -24,9 +26,9 @@ escape-store/
 
 ## 🛠 Technologies
 
-⚡️ HTML5
-🎨 CSS3
-💻 Vanilla JavaScript
+⚡️ HTML5\
+🎨 CSS3\
+💻 Vanilla JavaScript\
 🎬 Canvas API for animations
 
 ## 🚀 Setup
@@ -40,23 +42,23 @@ git clone https://github.com/yourusername/escape-store.git
 
 ## 📖 Usage
 
-➡️ Click "Buy Stars" to select quantity and payment method
-🌓 Toggle theme using the sun/moon icon
-🔝 Navigate through pages using the top menu
-📱 Mobile-friendly hamburger menu on smaller screens
+➡️ Click "Buy Stars" to select quantity and payment method\
+🌓 Toggle theme using the sun/moon icon\
+🔝 Navigate through pages using the top menu\
+📱 Mobile-friendly hamburger menu on smaller screens\
 
 ## 💳 Payment Methods
 
-🔹 PlayerOK
+🔹 PlayerOK\
 🔹 Telegram
 
 ## 🌐 Browser Support
 
-✅ Chrome (latest)
-✅ Firefox (latest)
-✅ Safari (latest)
-✅ Edge (latest)
-📱 Mobile browsers
+✅ Chrome (latest)\
+✅ Firefox (latest)\
+✅ Safari (latest)\
+✅ Edge (latest)\
+📱 Mobile browsers\
 
 ## 📜 License
 
