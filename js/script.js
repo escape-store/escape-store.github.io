@@ -1,3 +1,5 @@
+console.log('Script loading started');
+
 const CONFIG = {
     PAYMENT_LINKS: {
         playerok: {
@@ -65,10 +67,11 @@ const CONFIG = {
 
 class SnowEffect {
     constructor(canvasId) {
-        console.log('Initializing snow effect for:', canvasId);
+        console.log(`Initializing SnowEffect for ${canvasId}`);
         this.canvas = document.getElementById(canvasId);
+        
         if (!this.canvas) {
-            console.log('Canvas not found:', canvasId);
+            console.log(`Canvas ${canvasId} not found`);
             return;
         }
         
@@ -78,7 +81,7 @@ class SnowEffect {
         
         this.init();
         this.animate();
-        console.log('Snow effect initialized for:', canvasId);
+        console.log(`SnowEffect initialized for ${canvasId}`);
     }
 
     init() {
@@ -100,7 +103,6 @@ class SnowEffect {
         if (this.canvas) {
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
-            console.log('Canvas resized:', this.canvas.width, 'x', this.canvas.height);
         }
     }
 
@@ -130,82 +132,43 @@ class SnowEffect {
 let selectedQuantity = null;
 let selectedPayment = null;
 
-function handleNavigation(pageName) {
-    console.log('Navigation triggered for:', pageName);
-    window.location.hash = '#' + pageName;
-    showPage(pageName);
-}
-
-function showPage(pageId) {
-    console.log('Showing page:', pageId);
-    const pages = document.querySelectorAll('.page');
-    console.log('Total pages found:', pages.length);
+function initializeNavigation() {
+    console.log('Initializing navigation');
     
-    pages.forEach(page => {
-        console.log('Processing page:', page.id);
-        page.classList.remove('active');
-    });
-    
-    const targetPage = document.getElementById(`${pageId}-page`);
-    console.log('Target page found:', !!targetPage);
-    
-    if (targetPage) {
-        targetPage.classList.add('active');
-        console.log('Page activated:', pageId);
-    }
-}
-
-function updatePayButton() {
-    const buyButton = document.querySelector('#buy-page .buy-button');
-    if (buyButton) {
-        buyButton.style.opacity = selectedQuantity && selectedPayment ? '1' : '0.5';
-        console.log('Pay button updated:', selectedQuantity, selectedPayment);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM Content Loaded');
-    
-    // Initialize snow effects
-    ['snow', 'snow-buy', 'snow-terms'].forEach(id => {
-        new SnowEffect(id);
-    });
-
-    // Mobile menu
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    menuToggle?.addEventListener('click', () => {
-        console.log('Menu toggle clicked');
-        menuToggle.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-
-    // Theme toggle
-    const themeToggle = document.querySelector('.theme-toggle');
-    themeToggle?.addEventListener('click', () => {
-        console.log('Theme toggled');
-        document.body.classList.toggle('light-theme');
-    });
-
-    // Navigation
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
-            console.log('Nav link clicked:', link.dataset.page);
             if(link.dataset.page) {
                 e.preventDefault();
-                handleNavigation(link.dataset.page);
+                console.log(`Navigation clicked: ${link.dataset.page}`);
+                showPage(link.dataset.page);
             }
         });
     });
 
-    // Buy button
-    document.querySelector('.buy-button')?.addEventListener('click', () => {
-        console.log('Main buy button clicked');
-        handleNavigation('buy');
-    });
+    const buyButton = document.querySelector('.buy-button');
+    if (buyButton) {
+        buyButton.addEventListener('click', () => {
+            console.log('Buy button clicked');
+            showPage('buy');
+        });
+    }
+}
 
-    // Quantity options
+function showPage(pageId) {
+    console.log(`Showing page: ${pageId}`);
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+    
+    const targetPage = document.getElementById(`${pageId}-page`);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        console.log(`Page ${pageId} activated`);
+    }
+}
+
+function initializeQuantityOptions() {
+    console.log('Initializing quantity options');
     const quantities = [15, 25, 50, 75, 100, 150, 250, 300, 500, 750, 1000, 2500];
     const quantityGrid = document.querySelector('.quantity-grid');
     
@@ -215,7 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
             button.className = 'quantity-option';
             button.textContent = qty;
             button.addEventListener('click', () => {
-                console.log('Quantity selected:', qty);
                 document.querySelectorAll('.quantity-option').forEach(btn => 
                     btn.classList.remove('selected'));
                 button.classList.add('selected');
@@ -225,11 +187,12 @@ document.addEventListener('DOMContentLoaded', () => {
             quantityGrid.appendChild(button);
         });
     }
+}
 
-    // Payment options
+function initializePaymentOptions() {
+    console.log('Initializing payment options');
     document.querySelectorAll('.payment-option').forEach(button => {
         button.addEventListener('click', () => {
-            console.log('Payment option selected:', button.textContent);
             document.querySelectorAll('.payment-option').forEach(btn => 
                 btn.classList.remove('selected'));
             button.classList.add('selected');
@@ -237,41 +200,14 @@ document.addEventListener('DOMContentLoaded', () => {
             updatePayButton();
         });
     });
+}
 
-    // Buy buttons
-    document.querySelectorAll('.buy-button').forEach(button => {
-        button.addEventListener('click', () => {
-            console.log('Buy button clicked, state:', { selectedQuantity, selectedPayment });
-            if (selectedQuantity && selectedPayment) {
-                showOrderModal();
-            }
-        });
-    });
-
-    // Modal handling
-    window.onclick = (e) => {
-        const modal = document.getElementById('order-modal');
-        if (e.target === modal) {
-            console.log('Modal closed by outside click');
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 300);
-        }
-    };
-
-    // Hash change handling
-    window.addEventListener('hashchange', () => {
-        const page = window.location.hash.slice(1) || 'escape';
-        console.log('Hash changed to:', page);
-        showPage(page);
-    });
-
-    // Initial page load
-    const initialPage = window.location.hash.slice(1) || 'escape';
-    console.log('Initial page load:', initialPage);
-    showPage(initialPage);
-});
+function updatePayButton() {
+    const buyButton = document.querySelector('#buy-page .buy-button');
+    if (buyButton) {
+        buyButton.style.opacity = selectedQuantity && selectedPayment ? '1' : '0.5';
+    }
+}
 
 function showOrderModal() {
     console.log('Showing order modal');
@@ -287,7 +223,6 @@ function showOrderModal() {
     `;
     
     const paymentLink = CONFIG.PAYMENT_LINKS[selectedPayment][selectedQuantity];
-    console.log('Payment link:', paymentLink);
     
     if (paymentLink) {
         proceedButton.onclick = () => window.location.href = paymentLink;
@@ -297,7 +232,44 @@ function showOrderModal() {
     }
     
     modal.style.display = 'block';
-    setTimeout(() => {
-        modal.classList.add('active');
-    }, 10);
+    setTimeout(() => modal.classList.add('active'), 10);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded - Starting initialization');
+    
+    // Initialize snow effects
+    ['snow', 'snow-buy', 'snow-terms'].forEach(id => {
+        new SnowEffect(id);
+    });
+
+    // Initialize mobile menu
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // Initialize theme toggle
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+        });
+    }
+
+    // Initialize all components
+    initializeNavigation();
+    initializeQuantityOptions();
+    initializePaymentOptions();
+
+    // Show initial page
+    const initialPage = window.location.hash.slice(1) || 'escape';
+    showPage(initialPage);
+
+    console.log('Initialization complete');
+});
