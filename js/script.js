@@ -58,9 +58,7 @@ const CONFIG = {
             1000: "2.449 TON",
             2500: "6.039 TON"
         }
-    },
-    TELEGRAM_CHANNEL: "https://t.me/escape_store",
-    SUPPORT_EMAIL: "escape-store@ccmail.uk"
+    }
 };
 
 class SnowEffect {
@@ -218,9 +216,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (paymentLink) {
             proceedButton.onclick = () => window.location.href = paymentLink;
             proceedButton.style.display = 'block';
+            proceedButton.classList.remove('disabled');
             notice.textContent = '';
         } else {
-            proceedButton.style.display = 'none';
+            proceedButton.style.display = 'block';
+            proceedButton.classList.add('disabled');
             notice.textContent = 'Not available now';
         }
         
