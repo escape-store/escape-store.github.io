@@ -410,15 +410,17 @@ canvas {
         padding-left: 20px;
     }
 
-    .modal-page {
-        min-height: 100vh;
-        height: auto;
+   .modal-page {
+        position: absolute;  /* Change from fixed to absolute */
+        overflow-y: scroll;  /* Enable scrolling */
+        -webkit-overflow-scrolling: touch;  /* Smooth scrolling for iOS */
     }
 
     #escape-page .content {
-        min-height: 100vh;
-        height: auto;
-        justify-content: flex-start;
+        padding-top: 60px;  /* Reduced top padding */
+        padding-left: 0;    /* Remove left padding */
+        margin-left: 20px;  /* Add margin instead of padding */
+        max-width: 95%;     /* Slightly increase max-width */
     }
 
     .buy-button {
@@ -466,6 +468,7 @@ canvas {
         font-size: clamp(60px, 12vw, 100px);
         white-space: normal;
         line-height: 1;
+        margin-top: -20px;
     }
 
     .subtitle {
