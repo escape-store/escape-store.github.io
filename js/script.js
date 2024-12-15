@@ -1,5 +1,3 @@
-console.log('Script loading started');
-
 const CONFIG = {
     PAYMENT_LINKS: {
         playerok: {
@@ -60,20 +58,13 @@ const CONFIG = {
             1000: "2.449 TON",
             2500: "6.039 TON"
         }
-    },
-    TELEGRAM_CHANNEL: "https://t.me/escape_store",
-    SUPPORT_EMAIL: "escape-store@ccmail.uk"
+    }
 };
 
 class SnowEffect {
     constructor(canvasId) {
-        console.log(`Initializing SnowEffect for ${canvasId}`);
         this.canvas = document.getElementById(canvasId);
-        
-        if (!this.canvas) {
-            console.log(`Canvas ${canvasId} not found`);
-            return;
-        }
+        if (!this.canvas) return;
         
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
@@ -81,7 +72,6 @@ class SnowEffect {
         
         this.init();
         this.animate();
-        console.log(`SnowEffect initialized for ${canvasId}`);
     }
 
     init() {
@@ -132,43 +122,32 @@ class SnowEffect {
 let selectedQuantity = null;
 let selectedPayment = null;
 
-function initializeNavigation() {
-    console.log('Initializing navigation');
-    
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            if(link.dataset.page) {
-                e.preventDefault();
-                console.log(`Navigation clicked: ${link.dataset.page}`);
-                showPage(link.dataset.page);
-            }
-        });
-    });
-
-    const buyButton = document.querySelector('.buy-button');
-    if (buyButton) {
-        buyButton.addEventListener('click', () => {
-            console.log('Buy button clicked');
-            showPage('buy');
-        });
-    }
+function scrollToSection(sectionId) {
+    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
 }
 
-function showPage(pageId) {
-    console.log(`Showing page: ${pageId}`);
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize snow effects
+    ['snow', 'snow-buy', 'snow-terms'].forEach(id => {
+        new SnowEffect(id);
     });
-    
-    const targetPage = document.getElementById(`${pageId}-page`);
-    if (targetPage) {
-        targetPage.classList.add('active');
-        console.log(`Page ${pageId} activated`);
-    }
-}
 
-function initializeQuantityOptions() {
-    console.log('Initializing quantity options');
+    // Mobile menu
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    menuToggle?.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    // Theme toggle
+    const themeToggle = document.querySelector('.theme-toggle');
+    themeToggle?.addEventListener('click', () => {
+        document.body.classList.toggle('light-theme');
+    });
+
+    // Quantity options
     const quantities = [15, 25, 50, 75, 100, 150, 250, 300, 500, 750, 1000, 2500];
     const quantityGrid = document.querySelector('.quantity-grid');
     
@@ -187,10 +166,8 @@ function initializeQuantityOptions() {
             quantityGrid.appendChild(button);
         });
     }
-}
 
-function initializePaymentOptions() {
-    console.log('Initializing payment options');
+    // Payment options
     document.querySelectorAll('.payment-option').forEach(button => {
         button.addEventListener('click', () => {
             document.querySelectorAll('.payment-option').forEach(btn => 
@@ -200,76 +177,6 @@ function initializePaymentOptions() {
             updatePayButton();
         });
     });
-}
 
-function updatePayButton() {
-    const buyButton = document.querySelector('#buy-page .buy-button');
-    if (buyButton) {
-        buyButton.style.opacity = selectedQuantity && selectedPayment ? '1' : '0.5';
-    }
-}
-
-function showOrderModal() {
-    console.log('Showing order modal');
-    const modal = document.getElementById('order-modal');
-    const details = modal.querySelector('.order-details');
-    const proceedButton = modal.querySelector('.proceed-button');
-    const notice = modal.querySelector('.availability-notice');
-    
-    details.innerHTML = `
-        <span class="detail-label">Amount:</span> <span class="detail-value">${selectedQuantity} stars</span><br>
-        <span class="detail-label">Method:</span> <span class="detail-value">${selectedPayment}</span><br>
-        <span class="detail-label">Price:</span> <span class="detail-value">${CONFIG.PRICES[selectedPayment][selectedQuantity]}</span>
-    `;
-    
-    const paymentLink = CONFIG.PAYMENT_LINKS[selectedPayment][selectedQuantity];
-    
-    if (paymentLink) {
-        proceedButton.onclick = () => window.location.href = paymentLink;
-        notice.textContent = '';
-    } else {
-        notice.textContent = 'Not available now';
-    }
-    
-    modal.style.display = 'block';
-    setTimeout(() => modal.classList.add('active'), 10);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM Content Loaded - Starting initialization');
-    
-    // Initialize snow effects
-    ['snow', 'snow-buy', 'snow-terms'].forEach(id => {
-        new SnowEffect(id);
-    });
-
-    // Initialize mobile menu
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-    }
-
-    // Initialize theme toggle
-    const themeToggle = document.querySelector('.theme-toggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-        });
-    }
-
-    // Initialize all components
-    initializeNavigation();
-    initializeQuantityOptions();
-    initializePaymentOptions();
-
-    // Show initial page
-    const initialPage = window.location.hash.slice(1) || 'escape';
-    showPage(initialPage);
-
-    console.log('Initialization complete');
-});
+    // Buy button
+    document.querySelector('#buy .buy-button')?.addEventListener
