@@ -347,7 +347,7 @@ nav {
     font-size: 18px;
 }
 
-canvas {
+.snow-canvas {
     position: fixed;
     top: 0;
     left: 0;
