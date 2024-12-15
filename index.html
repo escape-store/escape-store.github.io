@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E$CAPE STORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@600&family=Dela+Gothic+One&family=Alexandria:wght@700&family=Alkatra&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-mobile">
+            <button class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="nav-link" data-page="escape">E$CAPE</a>
+            <a href="#" class="nav-link" data-page="buy">Buy stars</a>
+            <a href="mailto:escape-store@ccmail.uk" class="nav-link">Support</a>
+            <a href="#" class="nav-link" data-page="terms">Terms of service</a>
+            <a href="https://t.me/escape_store" class="nav-link">Channel</a>
+        </div>
+        <button class="theme-toggle">Theme</button>
+    </nav>
+
+    <div class="pages">
+        <div class="page active" id="escape-page">
+            <canvas id="snow"></canvas>
+            <div class="content">
+                <h1 class="main-title">E<span class="dollar">$</span>CAPE<br>STORE</h1>
+                <p class="subtitle">Buy premium products <span class="highlight">without</span> commissions and overpayments</p>
+                <button class="buy-button">Buy stars!</button>
+            </div>
+        </div>
+
+        <div class="page" id="buy-page">
+            <canvas id="snow-buy"></canvas>
+            <h1>Buying stars</h1>
+            <p class="select-text">Please select the quantity</p>
+            <div class="quantity-grid"></div>
+            <p class="payment-text">Where would you like to pay for the order today?</p>
+            <div class="payment-options">
+                <button class="payment-option">Playerok</button>
+                <button class="payment-option">Telegram</button>
+            </div>
+            <button class="buy-button">Buyyy!</button>
+        </div>
+
+        <div class="page" id="terms-page">
+    <canvas id="snow-terms"></canvas>
+    <h1>Terms of Use</h1>
+    <div class="terms-content">
+        <div class="terms-item">
+            <div class="terms-label">Legal Age & Identity:</div>
+            <div class="terms-text">You confirm that you have reached the legal age in your jurisdiction and provide accurate information when using the service.</div>
+        </div>
+        <hr class="terms-divider">
+        
+        <div class="terms-item">
+            <div class="terms-label">Service Usage:</div>
+            <div class="terms-text">Our service is intended solely for the purchase of Telegram stars. Using the service for other purposes is not permitted.</div>
+        </div>
+        <hr class="terms-divider">
+        
+        <div class="terms-item">
+            <div class="terms-label">Payment & Delivery:</div>
+            <div class="terms-text">All transactions are conducted through official payment systems. Star delivery may take some time after payment confirmation.</div>
+        </div>
+        <hr class="terms-divider">
+        
+        <div class="terms-item">
+            <div class="terms-label">Risk Acknowledgment:</div>
+            <div class="terms-text">You understand and accept all risks associated with digital assets and their volatility.</div>
+        </div>
+        <hr class="terms-divider">
+        
+        <div class="terms-item">
+            <div class="terms-label">Technical Requirements:</div>
+            <div class="terms-text">To use the service, you must have an active Telegram account and stable internet connection.</div>
+        </div>
+        <hr class="terms-divider">
+        
+        <div class="terms-item">
+            <div class="terms-label">Service Limitations:</div>
+            <div class="terms-text">We reserve the right to restrict access to the service if terms of use violations are suspected.</div>
+        </div>
+        <hr class="terms-divider">
+        
+        <div class="terms-item">
+            <div class="terms-label">Privacy & Security:</div>
+            <div class="terms-text">We protect your data and use it only for order processing. You agree not to share your account credentials with third parties.</div>
+        </div>
+        <hr class="terms-divider">
+        
+        <div class="terms-item">
+            <div class="terms-label">Support Services:</div>
+            <div class="terms-text">Technical support is available through official communication channels. Response times may vary.</div>
+        </div>
+        <hr class="terms-divider">
+        
+        <div class="terms-item">
+            <div class="terms-label">Updates & Changes:</div>
+            <div class="terms-text">We may update the terms of use. By continuing to use the service, you agree to the new terms.</div>
+        </div>
+        <hr class="terms-divider">
+        
+        <div class="terms-item">
+            <div class="terms-label">Liability Limitations:</div>
+            <div class="terms-text">Escape Store Ltd. is not responsible for Telegram technical issues or third-party actions.</div>
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <h2>Your order</h2>
+            <p class="order-details"></p>
+            <button class="proceed-button">Proceed to payment</button>
+            <span class="availability-notice"></span>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
