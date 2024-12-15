@@ -116,55 +116,60 @@ class SnowEffect {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize snow effects
-    new SnowEffect('snow');
-    new SnowEffect('snow-buy');
-    new SnowEffect('snow-terms');
+    const snowCanvases = ['snow', 'snow-buy', 'snow-terms'];
+    snowCanvases.forEach(canvasId => {
+        const canvas = document.getElementById(canvasId);
+        if (canvas) new SnowEffect(canvasId);
+    });
 
+    // Navigation functionality
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
-    
+    const themeToggle = document.querySelector('.theme-toggle');
+
     menuToggle?.addEventListener('click', () => {
         menuToggle.classList.toggle('active');
         navLinks.classList.toggle('active');
     });
 
-    const themeToggle = document.querySelector('.theme-toggle');
-    themeToggle.addEventListener('click', () => {
+    themeToggle?.addEventListener('click', () => {
         document.body.classList.toggle('light-theme');
+        themeToggle.textContent = document.body.classList.contains('light-theme') ? '🌙' : '☀️';
     });
 
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            if(link.dataset.page) {
-                e.preventDefault();
-                showPage(link.dataset.page);
+    // Page navigation
+    document.querySelectorAll('[data-page]').forEach(element => {
+        element.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(element.dataset.page);
+            if (menuToggle?.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
             }
         });
     });
 
-    document.querySelector('.buy-button')?.addEventListener('click', () => {
-        showPage('buy');
-    });
-
+    // Buy page functionality
     const quantities = [15, 25, 50, 75, 100, 150, 250, 300, 500, 750, 1000, 2500];
     const quantityGrid = document.querySelector('.quantity-grid');
     let selectedQuantity = null;
     let selectedPayment = null;
 
-    quantities.forEach(qty => {
-        const button = document.createElement('button');
-        button.className = 'quantity-option';
-        button.textContent = qty;
-        button.addEventListener('click', () => selectQuantity(button));
-        quantityGrid.appendChild(button);
-    });
+    if (quantityGrid) {
+        quantities.forEach(qty => {
+            const button = document.createElement('button');
+            button.className = 'quantity-option';
+            button.textContent = qty;
+            button.addEventListener('click', () => selectQuantity(button));
+            quantityGrid.appendChild(button);
+        });
+    }
 
     function selectQuantity(button) {
         document.querySelectorAll('.quantity-option').forEach(btn => 
             btn.classList.remove('selected'));
         button.classList.add('selected');
-        selectedQuantity = button.textContent;
+        selectedQuantity = parseInt(button.textContent);
         updatePayButton();
     }
 
@@ -173,13 +178,21 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.payment-option').forEach(btn => 
                 btn.classList.remove('selected'));
             button.classList.add('selected');
-            selectedPayment = button.textContent.toLowerCase();
+            selectedPayment = button.dataset.payment;
             updatePayButton();
         });
     });
 
+    function updatePayButton() {
+        if (selectedQuantity && selectedPayment) {
+            showOrderModal();
+        }
+    }
+
     function showOrderModal() {
-        const modal = document.getElementById('order-modal');
+        const modal = document.querySelector('.modal');
+        if (!modal) return;
+
         const details = modal.querySelector('.order-details');
         const proceedButton = modal.querySelector('.proceed-button');
         const notice = modal.querySelector('.availability-notice');
@@ -200,28 +213,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         modal.style.display = 'block';
-        setTimeout(() => {
-            modal.classList.add('active');
-        }, 10);
+        setTimeout(() => modal.classList.add('active'), 10);
     }
 
-    document.querySelectorAll('.buy-button').forEach(button => {
-        button.addEventListener('click', () => {
-            if (selectedQuantity && selectedPayment) {
-                showOrderModal();
-            }
-        });
-    });
-
-    window.onclick = (e) => {
-        const modal = document.getElementById('order-modal');
+    // Modal close functionality
+    window.addEventListener('click', (e) => {
+        const modal = document.querySelector('.modal');
         if (e.target === modal) {
             modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 300);
+            setTimeout(() => modal.style.display = 'none', 300);
         }
-    };
+    });
 
     function showPage(pageId) {
         document.querySelectorAll('.page').forEach(page => 
