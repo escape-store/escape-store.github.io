@@ -4,52 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E$CAPE STORE</title>
-    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@600&family=Dela+Gothic+One&family=Alexandria:wght@700&family=Alkatra&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-links">
-            <a href="#home" class="logo">E<span class="dollar">$</span>CAPE</a>
-            <a href="#stars">Buy stars</a>
-            <a href="mailto:escape-store@ccmail.uk">Support</a>
-            <a href="#" id="termsBtn">Terms of service</a>
+    <nav>
+        <div class="nav-mobile">
+            <button class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
+        <div class="nav-links">
+            <a href="#" class="nav-link" data-page="escape">E$CAPE</a>
+            <a href="#" class="nav-link" data-page="buy">Buy stars</a>
+            <a href="mailto:escape-store@ccmail.uk" class="nav-link">Support</a>
+            <a href="#" class="nav-link" data-page="terms">Terms of service</a>
+            <a href="https://t.me/escape_store" class="nav-link">Channel</a>
+        </div>
+        <button class="theme-toggle">Theme</button>
     </nav>
 
-    <section id="home" class="hero">
-        <div class="store-name">E<span class="dollar">$</span>CAPE<br>STORE</div>
-        <p class="hero-text">Buy premium products <span class="highlight">without</span> commissions and overpayments</p>
-        <button class="cta-button">Buy stars!</button>
-    </section>
-
-    <section id="stars" class="stars-section">
-        <div class="section-divider">Buy stars</div>
-        <h2 class="section-title">Buying stars</h2>
-        <p class="selection-text">Please select the quantity</p>
-        
-        <div class="stars-grid">
-            <!-- Star amounts will be generated via JavaScript -->
+    <div class="modal-container">
+        <div class="modal-page active" id="escape-page">
+            <canvas id="snow"></canvas>
+            <div class="content">
+                <h1 class="main-title">E<span class="dollar">$</span>CAPE<br>STORE</h1>
+                <p class="subtitle">Buy premium products <span class="highlight">without</span> commissions and overpayments</p>
+                <button class="buy-button" data-page="buy">Buy stars!</button>
+            </div>
         </div>
 
-        <p class="payment-text">Where would you like to pay for the order today?</p>
-        <div class="payment-options">
-            <button class="payment-option">Playerok</button>
-            <button class="payment-option">Telegram</button>
+        <div class="modal-page" id="buy-page">
+            <canvas id="snow-buy"></canvas>
+            <h1>Buying stars</h1>
+            <p class="select-text">Please select the quantity</p>
+            <div class="quantity-grid"></div>
+            <p class="payment-text">Where would you like to pay for the order today?</p>
+            <div class="payment-options">
+                <button class="payment-option">Playerok</button>
+                <button class="payment-option">Telegram</button>
+            </div>
+            <button class="buy-button">Buyyy!</button>
         </div>
-        <button class="cta-button">Paaay!</button>
-    </section>
 
-    <!-- Modals -->
-    <div id="termsModal" class="modal">
-        <!-- Terms content will be loaded via JavaScript -->
+        <div class="modal-page" id="terms-page">
+            <canvas id="snow-terms"></canvas>
+            <h1>Terms of Use</h1>
+            <div class="terms-content">
+                [Your existing terms content]
+            </div>
+        </div>
     </div>
 
-    <div id="paymentModal" class="modal">
-        <!-- Payment confirmation content will be added via JavaScript -->
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <h2>Your order</h2>
+            <p class="order-details"></p>
+            <button class="proceed-button">Proceed to payment</button>
+            <span class="availability-notice"></span>
+        </div>
     </div>
 
-    <div id="snowfall"></div>
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
