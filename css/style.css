@@ -137,7 +137,7 @@ canvas {
 }
 
 #escape-page .content {
-    padding-top: 120px;
+    padding-top: 80px;
     text-align: left;
     max-width: 90%;
     margin: 0 auto;
@@ -414,7 +414,7 @@ canvas {
     #escape-page .content {
         padding-top: 60px;
         padding-left: 0;
-        margin-left: 20px;
+        margin-left: 10px;
         max-width: 95%;
     }
 
@@ -468,12 +468,14 @@ canvas {
     .subtitle {
         font-size: clamp(24px, 4vw, 30px);
         max-width: 100%;
+        margin-left: -10px;
     }
 
     .buy-button {
         font-size: 36px;
         padding: 12px 30px;
         max-width: 80%;
+        margin-left: -10px;
     }
 
     .quantity-grid {
