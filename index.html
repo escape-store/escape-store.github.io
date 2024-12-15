@@ -4,79 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E$CAPE STORE</title>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@600&family=Dela+Gothic+One&family=Alexandria:wght@700&family=Alkatra&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <nav>
-        <div class="nav-brand">E$CAPE STORE</div>
-        <div class="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+    <nav class="navbar">
         <div class="nav-links">
-            <a href="#escape" class="nav-link">Home</a>
-            <a href="#buy" class="nav-link">Buy Stars</a>
-            <a href="#terms" class="nav-link">Terms</a>
-            <button class="theme-toggle">🌓</button>
+            <a href="#home" class="logo">E<span class="dollar">$</span>CAPE</a>
+            <a href="#stars">Buy stars</a>
+            <a href="mailto:escape-store@ccmail.uk">Support</a>
+            <a href="#" id="termsBtn">Terms of service</a>
         </div>
     </nav>
 
-    <main>
-        <section id="escape" class="section">
-            <canvas id="snow"></canvas>
-            <div class="content">
-                <h1>E$CAPE STORE</h1>
-                <p>Buy stars for Escape from Tarkov</p>
-                <button class="buy-button" onclick="scrollToSection('buy')">Buy Stars</button>
-            </div>
-        </section>
+    <section id="home" class="hero">
+        <div class="store-name">E<span class="dollar">$</span>CAPE<br>STORE</div>
+        <p class="hero-text">Buy premium products <span class="highlight">without</span> commissions and overpayments</p>
+        <button class="cta-button">Buy stars!</button>
+    </section>
 
-        <div class="section-divider">
-            <h2>BUY STARS</h2>
+    <section id="stars" class="stars-section">
+        <div class="section-divider">Buy stars</div>
+        <h2 class="section-title">Buying stars</h2>
+        <p class="selection-text">Please select the quantity</p>
+        
+        <div class="stars-grid">
+            <!-- Star amounts will be generated via JavaScript -->
         </div>
 
-        <section id="buy" class="section">
-            <canvas id="snow-buy"></canvas>
-            <div class="content">
-                <div class="quantity-grid"></div>
-                <div class="payment-options">
-                    <button class="payment-option">PlayerOK</button>
-                    <button class="payment-option">Telegram</button>
-                </div>
-                <button class="buy-button">Buy Stars</button>
-            </div>
-        </section>
-
-        <div class="section-divider">
-            <h2>TERMS OF SERVICE</h2>
+        <p class="payment-text">Where would you like to pay for the order today?</p>
+        <div class="payment-options">
+            <button class="payment-option">Playerok</button>
+            <button class="payment-option">Telegram</button>
         </div>
+        <button class="cta-button">Paaay!</button>
+    </section>
 
-        <section id="terms" class="section">
-            <canvas id="snow-terms"></canvas>
-            <div class="content">
-                <div class="terms-text">
-                    <p>By using our service, you agree to the following terms:</p>
-                    <ul>
-                        <li>All sales are final</li>
-                        <li>Delivery time: up to 24 hours</li>
-                        <li>Support: <a href="mailto:escape-store@ccmail.uk">escape-store@ccmail.uk</a></li>
-                        <li>Updates: <a href="https://t.me/escape_store" target="_blank">Telegram Channel</a></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <div id="order-modal" class="modal">
-        <div class="modal-content">
-            <div class="order-details"></div>
-            <p class="availability-notice"></p>
-            <button class="proceed-button">Proceed to Payment</button>
-        </div>
+    <!-- Modals -->
+    <div id="termsModal" class="modal">
+        <!-- Terms content will be loaded via JavaScript -->
     </div>
 
-    <script src="./js/main.js"></script>
+    <div id="paymentModal" class="modal">
+        <!-- Payment confirmation content will be added via JavaScript -->
+    </div>
+
+    <div id="snowfall"></div>
+    <script src="script.js"></script>
 </body>
 </html>
