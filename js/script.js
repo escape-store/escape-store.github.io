@@ -234,6 +234,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    document.querySelector('.modal-close').addEventListener('click', () => {
+        const modal = document.getElementById('order-modal');
+        modal.classList.remove('active');
+        setTimeout(() => modal.style.display = 'none', 300);
+    });
+
     window.onclick = (e) => {
         const modal = document.getElementById('order-modal');
         if (e.target === modal) {
