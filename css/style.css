@@ -117,7 +117,7 @@ canvas {
 
 .modal-page {
     display: none;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -126,6 +126,7 @@ canvas {
     background: var(--background-color);
     z-index: 100;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -404,27 +405,21 @@ canvas {
 }
 
 @media (max-width: 768px) {
-    #escape-page .content {
-        padding-top: 80px;
-        max-width: 100%;
-        padding-left: 20px;
-    }
-
-   .modal-page {
-        position: absolute;  /* Change from fixed to absolute */
-        overflow-y: scroll;  /* Enable scrolling */
-        -webkit-overflow-scrolling: touch;  /* Smooth scrolling for iOS */
+    .modal-page {
+        position: absolute;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
     }
 
     #escape-page .content {
-        padding-top: 60px;  /* Reduced top padding */
-        padding-left: 0;    /* Remove left padding */
-        margin-left: 20px;  /* Add margin instead of padding */
-        max-width: 95%;     /* Slightly increase max-width */
+        padding-top: 60px;
+        padding-left: 0;
+        margin-left: 20px;
+        max-width: 95%;
     }
 
-    .buy-button {
-        margin-top: 60px;
+    .main-title {
+        margin-top: -20px;
     }
 
     .nav-links {
@@ -468,7 +463,6 @@ canvas {
         font-size: clamp(60px, 12vw, 100px);
         white-space: normal;
         line-height: 1;
-        margin-top: -20px;
     }
 
     .subtitle {
